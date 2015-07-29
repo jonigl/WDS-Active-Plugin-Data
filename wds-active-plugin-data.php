@@ -8,6 +8,13 @@ Author: WebDevStudios
 Author URI: http://www.webdevstudios.com
 License: GPLv2
 Text Domain: wds-apd
+
+
+Version: 1.1.0
+Modifications description: I fix an issue in the Network view, indicate what sites a plugin is active on, if not network activated.
+Author: Jonathan Gastón Löwenstern
+Author URI: http://www.lowenstern.com.ar
+License: GPLv2
 */
 
 // Exit if accessed directly
@@ -231,9 +238,19 @@ class WDS_Active_Plugin_Data {
 
 					$index = 0;
 					foreach ( $this->get_all_sites_active_plugins() as $site => $plugins ) {
-
 						echo '<td title="' . esc_attr( $sites[ $index ]['domain'] ) . '">';
-						echo in_array( $plugin_file, (array) $plugins ) ? '<span class="dashicons dashicons-yes wds-green"></span>' : '<span class="dashicons dashicons-no-alt wds-red"></span>';
+						if (in_array( $plugin_file, (array) $plugins)){
+							echo '<span class="dashicons dashicons-yes wds-green"></span>';
+						}
+						else{
+							if (is_plugin_active_for_network( $plugin_file )){
+								echo '<span class="dashicons dashicons-yes wds-green"></span>';
+							}
+							else {
+								echo '<span class="dashicons dashicons-no-alt wds-red"></span>';
+							}
+						}
+
 						echo '</td>';
 
 						$index++;
